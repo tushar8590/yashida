@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+<struts>
+ 
+		<package name="user" namespace="/" extends="struts-default">
+		<action name="Login">
+			<result>pages/login.jsp</result>
+		</action>
+		<action name="dashboard" class="com.charliechocolatefactory.mvc.action.JobsDashboardAction">
+			<result name="SUCCESS">/pages/dashboard.jsp</result>
+		</action>
+	
+		<action name="checkBoxListAction" 
+         class="com.charliechocolatefactory.quartz.scheduler.jobs.JobsLoader" method="display">
+	     <result name="none">pages/startJob.jsp</result>
+        </action>
+		
+	</package>
+ 
+ 
+</struts>
