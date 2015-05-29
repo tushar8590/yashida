@@ -31,7 +31,7 @@ public class SQLQueries {
 	public static String insertProductSpecs = "insert into product_specs(product_id,product_spec_details) VALUES(?,?)";
 	public static String infibeamRawProductMaseter = "SELECT product_id,product_title FROM product_master WHERE product_sub_category = ? and mapped_infi = 'F'";
 	public static String naaptolRawProductMaseter = "SELECT product_id,product_title FROM product_master WHERE product_sub_category = ? and mapped_naaptol = 'F'";
-	public static String insertPCIFeed = "insert into pci_product_feed_temp values (?,?,?,?,?,?,?,?,?,?,?,?)";
+	public static String insertPCIFeed = "insert into pci_product_feed_temp values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	public static String getURLsPCIFeed = "select id,url,website from pci_product_feed where url_mapped = 'F' LIMIT 3000";
 	public static String insertproduct_pci_url_temp = "INSERT INTO product_pci_url_temp VALUES(?,?,?)";
 	public static String updatePCIFeedForUrlMapping = "update pci_product_feed_temp set url_mapped = 'T' where id = ? and website = ?";

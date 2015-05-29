@@ -28,7 +28,7 @@ import com.charliechocolatefactory.quartz.scheduler.dao.SQLQueries;
 import com.charliechocolatefactory.quartz.scheduler.model.Product;
 import com.charliechocolatefactory.quartz.scheduler.model.Store;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.google.common.util.concurrent.AbstractScheduledService.Scheduler;
+
 
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -59,9 +59,9 @@ static int Mycount = 1;
 	}
 
 
-	public static void main(String[] args) throws JsonProcessingException, IOException {
+/*	public static void main(String[] args) throws JsonProcessingException, IOException {
 		
-	}
+	}*/
 	
 	 static boolean saveResults(List<Product> list ){
 		 int i = 0;
@@ -119,6 +119,7 @@ static int Mycount = 1;
 	                		List<String> storeItems = store.getItems();
 	    	                params.addAll(storeItems);
 	    	                params.add("F");  // setting the url_mapped flag to F for the newly inserted entries
+	    	                params.add("F");  // added a temp flag
 	    	                flag = conn.upsertData(SQLQueries.insertPCIFeed, params);
 	    	              	params.clear();
 		                	if(flag)
@@ -150,7 +151,7 @@ static int Mycount = 1;
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		
 		System.out.println("PCI Updater");
-		Mycount ++;
+		/*Mycount ++;
 		if(Mycount == 3){
 			System.out.println("m here");
 			try {
@@ -162,8 +163,8 @@ static int Mycount = 1;
 				e.printStackTrace();
 			}
 			
-		}
-/*		List<String> urlList = new ArrayList<String>();
+		}*/
+		List<String> urlList = new ArrayList<String>();
 		JSONParser parser = new JSONParser();
 		 
         try {
@@ -176,11 +177,11 @@ static int Mycount = 1;
 		 driver.findElement(By.cssSelector("body > div.container > div.row > div:nth-child(2) > form > fieldset > input.span2")).sendKeys("12345678");;
 		driver.findElement(By.cssSelector("body > div.container > div.row > div:nth-child(2) > form > fieldset > button")).click(); 
 		driver.findElement(By.cssSelector("#catalogs-link > a")).click();   
-		    
-		    for(int x =19;x<=64;x++){
+		 List<Product> list = null;
+		    for(int x =7;x<=64;x++){
 		    String path = "#stores > form > fieldset > table > tbody > tr:nth-child("+x+") > td:nth-child(4) > a";
 		    	WebElement urlElem = driver.findElement(By.cssSelector(path));
-		    	//System.out.println(url.getAttribute("href").toString());
+		    //	System.out.println(url.getAttribute("href").toString());
 		    	urlList.add(urlElem.getAttribute("href").toString());
 			   
 		    }
@@ -193,8 +194,9 @@ static int Mycount = 1;
  
             JSONObject jsonObject = (JSONObject) obj;
             JSONArray productList = (JSONArray) jsonObject.get("product");
-            List<Product> list = new ObjectMapper().readValue(productList.toJSONString(), new org.codehaus.jackson.type.TypeReference<List<Product>>() { });
+             list = new ObjectMapper().readValue(productList.toJSONString(), new org.codehaus.jackson.type.TypeReference<List<Product>>() { });
             saveResults(list);
+            list.clear();
         	}
             
         	
@@ -202,7 +204,7 @@ static int Mycount = 1;
         	driver.close();driver.quit();  
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
 	}
 
 	

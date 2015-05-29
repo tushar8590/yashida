@@ -44,16 +44,13 @@ public class MainScheduler {
 	
 	public void startScheduler(){
 		
-		
-		
-
 		// create a list of jobs to be passed to job cart , this list will be taken as a 
 		/*JobCart jc = new JobCart();
 		jc.setJobList(new ArrayList<String>(Arrays.asList("Generic")));*/
 		
+		List<Class<? extends Job>> JobClasses = jobCart.getProcessedJobList();
 		
-		
-		for(Class<? extends Job> jobClass:jobCart.getProcessedJobList()){
+		for(Class<? extends Job> jobClass:JobClasses){
 		
 			JobDetail job = JobBuilder.newJob(jobClass)
 				.withIdentity(jobClass.toString(), "group1").build();
@@ -64,7 +61,7 @@ public class MainScheduler {
 					.newTrigger()
 					.withIdentity(jobClass.toString()+"Trigger",Scheduler.DEFAULT_GROUP)
 					.withSchedule(
-						CronScheduleBuilder.cronSchedule("0/2 * * * * ?"))
+						CronScheduleBuilder.cronSchedule("0 27 16 * * ? *"))
 					.build();
 	 
 			// Trigger the job to run on the next round minute

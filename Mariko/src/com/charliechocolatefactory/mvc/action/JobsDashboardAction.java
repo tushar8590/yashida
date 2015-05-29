@@ -29,7 +29,7 @@ public class JobsDashboardAction {
 		public String execute() {
 			System.out.println(getYourJob());
 			
-			
+			System.out.println("Setting Up Scheduler");
 			// Instantiate MainScheduler
 			mc = new MainScheduler();
 			
