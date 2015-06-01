@@ -2,20 +2,22 @@ package com.charliechocolatefactory.quartz.scheduler.dao;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Properties;
 
 
 public class JDBCConnection {
 
+	Properties props1 = new Properties();
+	
+	
 	
 	//private String host = "jdbc:mysql://103.21.58.156:3306/aapcorjr_aapdb9";
-	private String host = "jdbc:mysql://localhost:3306/aapcorjr_aapdb9";
+	private String host = "";
 	//private String host = "jdbc:mysql://103.21.58.156:3306/aapcorjr_dbaapcompare9";
 	/*private String userName = "aapcorjr_adbuser";
 	private String password = "adbuseraccess1@34";*/
 	
-	private String userName = "root";
-	private String password = "";
-	
+
 	private static Connection con;
 	
 	private static JDBCConnection conn = null;
@@ -24,6 +26,12 @@ public class JDBCConnection {
 	private JDBCConnection() {
 		try{
 			
+		props1.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/charliechochlatefactory/resources/DBConfig.properties"));
+		 String userName = props1.getProperty("DB_USERNAME"); 
+		// String password = props1.getProperty("DB_PASSWORD");
+		 String password = "";
+		 String host = props1.getProperty("DB_SERVER");
+		 
 			// Load the Driver class. 
 		Class.forName("com.mysql.jdbc.Driver");
 		// If you are using any other database then load the right driver here.
@@ -168,6 +176,35 @@ public class JDBCConnection {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}*/
+		}
+		return flag;
+	}
+	
+	public boolean insertBatch(String query,List<String> params){
+		boolean flag = false;
+		
+		
+		
+		
+		return flag;
+	}
+    
+	public PreparedStatement prepareStatement(String query) throws Exception{
+		return con.prepareStatement(query);
+	}
+	
+	
+	
+	public boolean execute(String query){
+		boolean flag = false;
+		try {
+			Statement stmt = con.createStatement();
+		
+		flag = stmt.execute(query);
+			
+		} catch (SQLException e) {
+	
+			e.printStackTrace();
 		}
 		return flag;
 	}
