@@ -36,6 +36,7 @@ public class JobsDashboardAction {
 			// Create JobCart with the with the List of elements selected
 			
 			jc = new JobCart();
+			System.out.println(this.getYourJob().split(","));
 			jc.setJobList(new ArrayList<String>(Arrays.asList(this.getYourJob().split(","))));
 			mc.setJobCart(jc);
 			

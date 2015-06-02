@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -23,7 +24,7 @@ import org.quartz.JobExecutionException;
 import com.charliechocolatefactory.quartz.scheduler.dao.JDBCConnection;
 import com.charliechocolatefactory.quartz.scheduler.dao.SQLQueries;
 import com.charliechocolatefactory.quartz.scheduler.model.ProductBean;
-
+import com.google.common.base.Splitter;
 
 public class InsertCSVToDBOMG implements Job {
 	
@@ -77,7 +78,7 @@ public class InsertCSVToDBOMG implements Job {
 
 				try {    
 					
-					String table = file.getName().substring(0, file.getName().indexOf("."));
+					String table = "omg_"+file.getName().substring(0, file.getName().indexOf("."));
 					// drop the existing table
 
 					String dropTable = SQLQueries.dropGenericTable;
@@ -97,9 +98,7 @@ public class InsertCSVToDBOMG implements Job {
 					final int batchSize = 1000;
 					int count = 0;
 					
-				/*	String query ="INSERT INTO catproduct_omg_all(product_id, section, brand, model, website, price, image, image_medium, image_zoom, url, color, stock,CategoryPath,custom1,custom2,custom3, custom4, custom5,description ) "
-							+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? )";
-*/
+
 					String query = SQLQueries.insertGenericOMG;
 					query =query.replaceAll("tableName+", table);
 					System.out.println(query);
@@ -115,35 +114,46 @@ public class InsertCSVToDBOMG implements Job {
 
 						//break comma separated line using ","    
 						String vendor=table;
+						
 
-						String arr[] = line.split(",\"");
+						Splitter splitter = Splitter.on(',');
+
+						//System.out.println(new Date());
+						List<String> lst = splitter.splitToList(line);
+					//	System.out.println(lst.toArray());
+						
+						
+						
+						
+						Object arr[] = lst.toArray();
+						
 						List<String> params = new ArrayList<String>();
-						productBean.setProductID(arr[0].replace('"', ' ').trim());
-						productBean.setProductSKU(arr[1].replace('"', ' ').trim());
-						productBean.setProductName(arr[2].replace('"', ' ').trim());
-						productBean.setProductDescription(arr[3].replace('"', ' ').trim());
-						productBean.setProductPrice(arr[4].replace('"', ' ').trim());
-						productBean.setProductPriceCurrency(arr[5].replace('"', ' ').trim());
-						productBean.setWasPrice(arr[6].replace('"', ' ').trim());
-						productBean.setDiscountedPrice(arr[7].replace('"', ' ').trim());
-						productBean.setProductURL(arr[8].replace('"', ' ').trim());
-						productBean.setPID(arr[9].replace('"', ' ').trim());
-						productBean.setMID(arr[10].replace('"', ' ').trim());
-						productBean.setProductImageSmallURL(arr[11].replace('"', ' ').trim());
-						productBean.setProductImageMediumURL(arr[12].replace('"', ' ').trim());
-						productBean.setProductImageLargeURL(arr[13].replace('"', ' ').trim());
-						productBean.setMPN(arr[14].replace('"', ' ').trim());
-						productBean.setStockAvailability(arr[15].replace('"', ' ').trim());
-						productBean.setBrand(arr[16].replace('"', ' ').trim());
-						productBean.setLocation(arr[17].replace('"', ' ').trim());
-						productBean.setColour(arr[18].replace('"', ' ').trim());
-						productBean.setCustom1(arr[19].replace('"', ' ').trim());
-						productBean.setCustom2(arr[20].replace('"', ' ').trim());
-						productBean.setCustom3(arr[21].replace('"', ' ').trim());
-						productBean.setCustom4(arr[22].replace('"', ' ').trim());
-						productBean.setCustom5(arr[23].replace('"', ' ').trim());
-						productBean.setCategoryName(arr[24].replace('"', ' ').trim());
-						productBean.setCategoryPathAsString(arr[25].replace('"', ' ').trim());
+						productBean.setProductID(arr[0].toString().replace('"', ' ').trim());
+						productBean.setProductSKU(arr[1].toString().replace('"', ' ').trim());
+						productBean.setProductName(arr[2].toString().replace('"', ' ').trim());
+						productBean.setProductDescription(arr[3].toString().replace('"', ' ').trim());
+						productBean.setProductPrice(arr[4].toString().replace('"', ' ').trim());
+						productBean.setProductPriceCurrency(arr[5].toString().replace('"', ' ').trim());
+						productBean.setWasPrice(arr[6].toString().replace('"', ' ').trim());
+						productBean.setDiscountedPrice(arr[7].toString().replace('"', ' ').trim());
+						productBean.setProductURL(arr[8].toString().replace('"', ' ').trim());
+						productBean.setPID(arr[9].toString().replace('"', ' ').trim());
+						productBean.setMID(arr[10].toString().replace('"', ' ').trim());
+						productBean.setProductImageSmallURL(arr[11].toString().replace('"', ' ').trim());
+						productBean.setProductImageMediumURL(arr[12].toString().replace('"', ' ').trim());
+						productBean.setProductImageLargeURL(arr[13].toString().replace('"', ' ').trim());
+						productBean.setMPN(arr[14].toString().replace('"', ' ').trim());
+						productBean.setStockAvailability(arr[15].toString().replace('"', ' ').trim());
+						productBean.setBrand(arr[16].toString().replace('"', ' ').trim());
+						productBean.setLocation(arr[17].toString().replace('"', ' ').trim());
+						productBean.setColour(arr[18].toString().replace('"', ' ').trim());
+						productBean.setCustom1(arr[19].toString().replace('"', ' ').trim());
+						productBean.setCustom2(arr[20].toString().replace('"', ' ').trim());
+						productBean.setCustom3(arr[21].toString().replace('"', ' ').trim());
+						productBean.setCustom4(arr[22].toString().replace('"', ' ').trim());
+						productBean.setCustom5(arr[23].toString().replace('"', ' ').trim());
+						productBean.setCategoryName(arr[24].toString().replace('"', ' ').trim());
+						productBean.setCategoryPathAsString(arr[25].toString().replace('"', ' ').trim());
 
 						params.add(productBean.getProductID());
 						params.add(productBean.getCategoryName());
@@ -185,17 +195,19 @@ public class InsertCSVToDBOMG implements Job {
 						//pstmt.execute();
 						//pstmt.close();
 						//System.out.println("I");
-
+						//System.out.println(params);
 						if(count == 1000)
 						{
+							 //System.out.println(new Timestamp(date.getTime()));
 							pstmt.executeBatch();
 							//conn.commit();
 							pstmt.clearBatch();
 							//pstmt.close();
-							System.out.println("Inserted");  
+							System.out.println("Inserted OMG");  
 							count=1;
+							// System.out.println(new Timestamp(date.getTime()));
 						}
-						System.gc();
+						//System.gc();
 
 					}    
 					pstmt.executeBatch();

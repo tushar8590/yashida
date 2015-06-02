@@ -25,7 +25,17 @@ public class JobFactory {
 		  }else if(jobName.trim().equalsIgnoreCase("Spec Loader")){
 			  jobClass = FlipkartSpecLoader.class;
 			  
+		  }else if(jobName.trim().equalsIgnoreCase("FK Feed Loader")){
+			  jobClass = InsertFKcsvtoDB.class;
+			  
+		  }else if(jobName.trim().equalsIgnoreCase("OMG Feed Loader")){
+			  jobClass = InsertCSVToDBOMG.class;
+			  
+		  }else if(jobName.trim().equalsIgnoreCase("SD Feed Loader")){
+			  jobClass = InsertSDcsvtoDB.class;
+			  
 		  }
+		  
 		  
 		  
 		  return jobClass;

@@ -5,10 +5,12 @@ package com.charliechocolatefactory.quartz.scheduler;
 
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import com.charliechocolatefactory.quartz.scheduler.jobs.GenericJob;
 import com.charliechocolatefactory.quartz.scheduler.jobs.JobCart;
@@ -38,12 +40,18 @@ public class MainScheduler {
 	static Scheduler scheduler;
 	private JobCart jobCart;
 	
-	
+	Properties props1 = new Properties();
 	
 	
 	
 	public void startScheduler(){
 		
+		try {
+			props1.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/charliechochlatefactory/resources/ApplicationResource.properties"));
+		} catch (IOException e1) {
+			
+			e1.printStackTrace();
+		}
 		// create a list of jobs to be passed to job cart , this list will be taken as a 
 		/*JobCart jc = new JobCart();
 		jc.setJobList(new ArrayList<String>(Arrays.asList("Generic")));*/
@@ -61,7 +69,7 @@ public class MainScheduler {
 					.newTrigger()
 					.withIdentity(jobClass.toString()+"Trigger",Scheduler.DEFAULT_GROUP)
 					.withSchedule(
-						CronScheduleBuilder.cronSchedule("0 27 16 * * ? *"))
+						CronScheduleBuilder.cronSchedule((String)props1.get("generalCronTiming")))
 					.build();
 	 
 			// Trigger the job to run on the next round minute

@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -89,12 +90,10 @@ public class InsertFKcsvtoDB implements Job {
 								int lineNumber = 0, tokenNumber = 0;    
 								final int batchSize = 1000;
 								int count = 0;
-						/*		String query ="INSERT INTO kid_clothes_master(product_id, section, brand, model, website, price, image_zoom, url,color,offers, stock,CategoryPath,description, size, size_variants, color_variants,style_code ) "
-										+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? )";*/
-
+					
 								String query = SQLQueries.insertGenericFK;
 								query =query.replaceAll("tableName+", table);
-
+								System.out.println(query);
 								pstmt = conn.prepareStatement(query);
 
 								String line="";
@@ -104,10 +103,12 @@ public class InsertFKcsvtoDB implements Job {
 
 									if(lineNumber++ == 0)  
 										continue;                  
-
 									//break comma separated line using ","    
 									String vendor="flipkart";
 									//String arr[] = fileName.split("\"");
+									java.util.Date date= new java.util.Date();
+									 
+									 
 									String []arr = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
 
 									List<String> params = new ArrayList<String>();
@@ -181,12 +182,14 @@ public class InsertFKcsvtoDB implements Job {
 									
 									if(count == 1000)
 									{
+										System.out.println(new Timestamp(date.getTime()));
 										pstmt.executeBatch();
 										
 										pstmt.clearBatch();
 										//pstmt.close();
-										System.out.println("Inserted");  
+										System.out.println("Inserted Flipkart");  
 										count=1;
+										System.out.println(new Timestamp(date.getTime()));
 									}
 
 

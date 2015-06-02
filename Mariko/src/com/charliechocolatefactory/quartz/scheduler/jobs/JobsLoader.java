@@ -35,6 +35,9 @@ public class JobsLoader extends ActionSupport {
 		jobs.add("PCI Feed Updater");
 		jobs.add("Spec Loader");
 		jobs.add("URL Resolver");
+		jobs.add("FK Feed Loader");
+		jobs.add("OMG Feed Loader");
+		jobs.add("SD Feed Loader");
 	}
  
 	public String[] getDefaultJob(){
