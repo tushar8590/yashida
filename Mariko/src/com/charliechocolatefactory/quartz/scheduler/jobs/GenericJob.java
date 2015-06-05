@@ -31,5 +31,9 @@ public class GenericJob implements Job{
 			e.printStackTrace();
 		 }
 	}
+	@Override
+	public String toString() {
+		return "GenericJob";
+	}
 
 }
