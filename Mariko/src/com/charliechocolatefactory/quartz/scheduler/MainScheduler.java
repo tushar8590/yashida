@@ -64,7 +64,14 @@ public class MainScheduler {
 				.withIdentity(jobClass.toString(), "group1").build();
 			
 			
-			System.out.println(jobClass.toString()+"Trigger");
+			System.out.println(jobClass.toString());
+			
+			// compare the jobClass and properties 
+			
+			//if(jobClass.toString().contains(s))  class com.charliechocolatefactory.quartz.scheduler.jobs.GenericJob
+			
+			
+			
 			Trigger cronTrigger = TriggerBuilder
 					.newTrigger()
 					.withIdentity(jobClass.toString()+"Trigger",Scheduler.DEFAULT_GROUP)
