@@ -29,6 +29,8 @@ import java.util.StringTokenizer;
 
 
 
+
+import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -40,7 +42,7 @@ import com.charliechocolatefactory.quartz.scheduler.model.ProductBean;
 public class InsertSDcsvtoDB implements Job {
 	
 	
-	
+	final static Logger logger = Logger.getLogger(InsertSDcsvtoDB.class);
 	private static JDBCConnection conn = null;
 	Properties props1 = new Properties();
 	private ResultSet rs;
@@ -59,12 +61,12 @@ public class InsertSDcsvtoDB implements Job {
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 
 		conn = JDBCConnection.getInstance();
-		
+		logger.info("Starting SD Feed Processor");
 		
 		// getting the feed firectory from Resources file
 		
 		try {
-			props1.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/charliechochlatefactory/resources/ApplicationResource.properties"));
+			props1.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/charliechocolatefactory/resources/ApplicationResource.properties"));
 		} catch (IOException e1) {
 			
 			e1.printStackTrace();
@@ -85,7 +87,9 @@ public class InsertSDcsvtoDB implements Job {
 		PreparedStatement pstmt  = null;
 		
 		try {  
+			
 			String table = file.getName().substring(0, file.getName().indexOf("."));
+			logger.info("Table Name "+table);
 			// drop the existing table
 
 			String dropTable = SQLQueries.dropGenericTable;
@@ -184,6 +188,7 @@ public class InsertSDcsvtoDB implements Job {
 				{
 					pstmt.executeBatch();
 					
+					
 					pstmt.clearBatch();
 					//pstmt.close();
 					System.out.println("Inserted");  
@@ -193,17 +198,18 @@ public class InsertSDcsvtoDB implements Job {
 
 			}    
 			pstmt.executeBatch();
+			logger.info("Processing completed  for "+table + " For "+lineNumber+" Records");
 		} catch (FileNotFoundException e) {    
-			// TODO Auto-generated catch block    
+			logger.error(e.getMessage());  
 			e.printStackTrace();    
 		} catch (Exception e) {    
-			// TODO Auto-generated catch block    
+			logger.error(e.getMessage());   
 			
 			e.printStackTrace();    
 		}
 	}
 }
-		
+		logger.info("Completed SD Feed Processor");	
 	}
 
 }

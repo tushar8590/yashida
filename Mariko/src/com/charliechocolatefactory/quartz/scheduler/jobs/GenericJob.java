@@ -24,7 +24,7 @@ public class GenericJob implements Job{
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		System.out.println("Hello");
 		try {
-			props1.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/charliechochlatefactory/resources/DBConfig.properties"));
+			props1.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/charliechocolatefactory/resources/DBConfig.properties"));
 			System.out.println(props1.get("DB_USERNAME"));
 			
 		} catch (IOException e) {

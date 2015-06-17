@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -26,7 +27,7 @@ import com.charliechocolatefactory.quartz.scheduler.model.ProductBean;
 
 public class InsertFKcsvtoDB implements Job {
 	
-	
+	final static Logger logger = Logger.getLogger(InsertFKcsvtoDB.class);
 	private static JDBCConnection conn = null;
 	Properties props1 = new Properties();
 	private ResultSet rs;
@@ -48,8 +49,9 @@ public class InsertFKcsvtoDB implements Job {
 		public void execute(JobExecutionContext arg0)
 				throws JobExecutionException {
 			conn = JDBCConnection.getInstance();
+			logger.info("Starting FK Feed Processor");
 			try {
-				props1.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/charliechochlatefactory/resources/ApplicationResource.properties"));
+				props1.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/charliechocolatefactory/resources/ApplicationResource.properties"));
 			} catch (IOException e1) {
 				
 				e1.printStackTrace();
@@ -72,8 +74,9 @@ public class InsertFKcsvtoDB implements Job {
 
 							try {  
 								
-								String table = file.getName().substring(0, file.getName().indexOf("."));
 								
+								String table = file.getName().substring(0, file.getName().indexOf("."));
+								logger.info("Table Name  "+table);
 								// drop the existing table
 
 								String dropTable = SQLQueries.dropGenericTable;
@@ -93,7 +96,7 @@ public class InsertFKcsvtoDB implements Job {
 					
 								String query = SQLQueries.insertGenericFK;
 								query =query.replaceAll("tableName+", table);
-								System.out.println(query);
+							//	System.out.println(query);
 								pstmt = conn.prepareStatement(query);
 
 								String line="";
@@ -182,29 +185,31 @@ public class InsertFKcsvtoDB implements Job {
 									
 									if(count == 1000)
 									{
-										System.out.println(new Timestamp(date.getTime()));
+										//System.out.println(new Timestamp(date.getTime()));
 										pstmt.executeBatch();
 										
 										pstmt.clearBatch();
 										//pstmt.close();
-										System.out.println("Inserted Flipkart");  
+										//System.out.println("Inserted Flipkart");  
 										count=1;
-										System.out.println(new Timestamp(date.getTime()));
+										//System.out.println(new Timestamp(date.getTime()));
 									}
 
 
 								}    
 								pstmt.executeBatch();
+								logger.info("Processing completed  for "+table + " For "+lineNumber+" Records");
 							} catch (FileNotFoundException e) {    
 								// TODO Auto-generated catch block    
 								e.printStackTrace();    
+								logger.error(e.getMessage());
 							} catch (Exception e) {    
 								// TODO Auto-generated catch block    
 
-								e.printStackTrace();    
+								e.printStackTrace();   logger.error(e.getMessage()); 
 							}
 						}
-			
+						logger.info("Completed FK Feed Processor");
 		}
 		
 }

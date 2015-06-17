@@ -6,15 +6,17 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.quartz.SchedulerException;
 
 import com.charliechocolatefactory.quartz.scheduler.*;
 import com.charliechocolatefactory.quartz.scheduler.jobs.JobCart;
 
 
+
 public class JobsDashboardAction {
 
-	
+	final static Logger logger = Logger.getLogger(JobsDashboardAction.class);
 	private Date date1;
 	private String YourJob;
 	
@@ -28,8 +30,9 @@ public class JobsDashboardAction {
 		// all struts logic here
 		public String execute() {
 			System.out.println(getYourJob());
-			
+			logger.info("Setting Up Scheduler");
 			System.out.println("Setting Up Scheduler");
+			
 			// Instantiate MainScheduler
 			mc = new MainScheduler();
 			

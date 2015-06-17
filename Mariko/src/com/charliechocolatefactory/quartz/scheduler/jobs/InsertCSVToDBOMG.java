@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -30,7 +31,7 @@ public class InsertCSVToDBOMG implements Job {
 	
 	
 
-		
+	final static Logger logger = Logger.getLogger(InsertCSVToDBOMG.class);
 		
 		private static JDBCConnection conn = null;
 		Properties props1 = new Properties();
@@ -51,11 +52,11 @@ public class InsertCSVToDBOMG implements Job {
 				throws JobExecutionException {
 			conn = JDBCConnection.getInstance();
 			
-			
+			logger.info("Starting OMG Feed Processor");
 			// getting the feed firectory from Resources file
 			
 			try {
-				props1.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/charliechochlatefactory/resources/ApplicationResource.properties"));
+				props1.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/charliechocolatefactory/resources/ApplicationResource.properties"));
 			} catch (IOException e1) {
 				
 				e1.printStackTrace();
@@ -77,7 +78,7 @@ public class InsertCSVToDBOMG implements Job {
 				PreparedStatement pstmt  = null;
 
 				try {    
-					
+					logger.info("Processing Starting for "+file.getName().substring(0, file.getName().indexOf(".")));
 					String table = "omg_"+file.getName().substring(0, file.getName().indexOf("."));
 					// drop the existing table
 
@@ -211,15 +212,19 @@ public class InsertCSVToDBOMG implements Job {
 
 					}    
 					pstmt.executeBatch();
+					logger.info("Processing completed  for "+file.getName().substring(0, file.getName().indexOf(".")) + " For "+lineNumber+" Records");
 				} catch (FileNotFoundException e) {    
 					
-					e.printStackTrace();    
+					e.printStackTrace();   
+					logger.error(e.getMessage());
 				} catch (Exception e) {    
 					    
-					e.printStackTrace();    
+					e.printStackTrace(); logger.error(e.getMessage());   
 				}
 			}
 			}
+			
+			logger.info("Completed OMG Feed Processor");
 			
 		}
 }

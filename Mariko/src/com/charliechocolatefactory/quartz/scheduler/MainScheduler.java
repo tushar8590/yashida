@@ -47,7 +47,7 @@ public class MainScheduler {
 	public void startScheduler(){
 		
 		try {
-			props1.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/charliechochlatefactory/resources/ApplicationResource.properties"));
+			props1.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/charliechocolatefactory/resources/ApplicationResource.properties"));
 		} catch (IOException e1) {
 			
 			e1.printStackTrace();
