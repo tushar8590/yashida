@@ -137,6 +137,9 @@ public class InsertCSVToDBOMG implements Job {
 						productBean.setProductPriceCurrency(arr[5].toString().replace('"', ' ').trim());
 						productBean.setWasPrice(arr[6].toString().replace('"', ' ').trim());
 						productBean.setDiscountedPrice(arr[7].toString().replace('"', ' ').trim());
+						if(productBean.getDiscountedPrice().equalsIgnoreCase("0.00") || productBean.getDiscountedPrice().equalsIgnoreCase("0")){
+							productBean.setDiscountedPrice(productBean.getProductPrice());
+						}
 						productBean.setProductURL(arr[8].toString().replace('"', ' ').trim());
 						productBean.setPID(arr[9].toString().replace('"', ' ').trim());
 						productBean.setMID(arr[10].toString().replace('"', ' ').trim());
@@ -175,7 +178,7 @@ public class InsertCSVToDBOMG implements Job {
 						params.add(productBean.getCustom4());
 						params.add(productBean.getCustom5());
 						params.add(productBean.getProductDescription());
-
+						
 
 						/*for(String s:arr){
 				     System.out.println(s.replace('"', ' ').trim());
