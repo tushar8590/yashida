@@ -45,8 +45,23 @@ public class JDBCConnection {
 		}
 		
 	}
-	
+	public static void setAutoCommit(boolean state){
+		try {
+			con.setAutoCommit(state);
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+	}
 
+	public static void  commit(){
+		try {
+			con.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public static JDBCConnection getInstance(){
 		 
 /*		try {
