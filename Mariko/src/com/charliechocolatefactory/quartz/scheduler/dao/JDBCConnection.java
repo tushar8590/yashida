@@ -29,8 +29,8 @@ public class JDBCConnection {
 			
 		props1.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/charliechocolatefactory/resources/DBConfig.properties"));
 		 String userName = props1.getProperty("DB_USERNAME"); 
-		// String password = props1.getProperty("DB_PASSWORD");
-		 String password = "";
+		 String password = props1.getProperty("DB_PASSWORD");
+		// String password = "";
 		 String host = props1.getProperty("DB_SERVER");
 		 
 			// Load the Driver class. 
