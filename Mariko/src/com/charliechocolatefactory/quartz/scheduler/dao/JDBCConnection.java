@@ -29,8 +29,8 @@ public class JDBCConnection {
 			
 		props1.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/charliechocolatefactory/resources/DBConfig.properties"));
 		 String userName = props1.getProperty("DB_USERNAME"); 
-		 String password = props1.getProperty("DB_PASSWORD");
-		// String password = "";
+		// String password = props1.getProperty("DB_PASSWORD");
+		 String password = "";
 		 String host = props1.getProperty("DB_SERVER");
 		 
 			// Load the Driver class. 
@@ -223,6 +223,28 @@ public class JDBCConnection {
 			e.printStackTrace();
 		}
 		return flag;
+	}
+	public boolean executeUpdate(String query){
+		int flag = 0;
+		Statement stmt =null;
+		try {
+			stmt = con.createStatement();
+		
+		flag = stmt.executeUpdate(query);
+			
+		} catch (SQLException e) {
+	
+			e.printStackTrace();
+		}finally{
+			try {
+				if(stmt!=null && !stmt.isClosed())
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return flag == 0?true:false;
 	}
 	
 	

@@ -12,7 +12,7 @@ import java.util.List;
 public interface CustomMatcher {
 
 	public void setChildTables(List<String> children);
-	public void getMappedData(String childTableName) throws Exception;
+	public void getMappedData(List<String> childTableNames) throws Exception;
 	public void setMainTable(String mainTable);
 	public void setTargetTable(String targetTable);
 	

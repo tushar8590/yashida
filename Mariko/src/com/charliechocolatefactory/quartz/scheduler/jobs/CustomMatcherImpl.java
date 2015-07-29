@@ -30,9 +30,9 @@ public class CustomMatcherImpl implements CustomMatcher {
 
 	public   void initiate() throws Exception{
 		
-		for(String childTableName:this.childTableNames){
-			getMappedData(childTableName);
-		}
+		//for(String childTableName:this.childTableNames){
+			getMappedData(childTableNames);
+		//}
 		
 	}
 	
@@ -41,40 +41,44 @@ public class CustomMatcherImpl implements CustomMatcher {
 		this.setTargetTable(targetTable);
 		childTableNames = new ArrayList<String>();
 		 childTableNames.add("sd_fashion");
-/*		 childTableNames.add("omg_fashionara");
+		 childTableNames.add("omg_fashionara");
 		 childTableNames.add("omg_jabong");
 		 childTableNames.add("omg_zovi");
 		 childTableNames.add("omg_yepme");
-		 childTableNames.add("omg_sholclues");*/
+		 childTableNames.add("omg_shopclues");
+		 childTableNames.add("omg_indiatimes");
+		 childTableNames.add("omg_paytm");
 		 
 	}
 
 	@Override
-	public void getMappedData(String childTableName) throws Exception {
+	public void getMappedData(List<String> childTableNames) throws Exception {
 		conn = JDBCConnection.getInstance(); 
 		conn.setAutoCommit(false);
 		int count = 1;
 		//tableName = varname1.toString();
 		
 		
-		String fkShoeQuery = "Select model,product_id,brand from "+this.mainTable+"  where section in ('Shirts','Shorts')";
+		String fkShoeQuery = "Select model,product_id,brand from "+this.mainTable+" where mapped_flag IS NULL and section like '%SHIRTS%'";
 		//System.out.println(fkShoeQuery);
 		ResultSet rs = conn.executeQuery(fkShoeQuery, null);
 
 		
-				
-		String childQuery = "SELECT child.*,MATCH(model) AGAINST (?) FROM "+ childTableName+" child order by MATCH(model) AGAINST (?) desc LIMIT 1";
-		String insertQuery = "insert into "+this.targetTable+" values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		PreparedStatement pstmt = conn.prepareStatement(insertQuery);
+
 		int fkCount = 1;
 		List<String> params = new ArrayList<String>();
+		PreparedStatement pstmt = null;
+		String insertQuery = "insert into "+this.targetTable+" values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		pstmt = conn.prepareStatement(insertQuery);
 		while(rs.next()){
 		//	System.out.println("Searching fro "+rs.getString("model"));
 			//System.out.println(new  java.sql.Timestamp(new java.util.Date().getTime()));
-			
+			for(String childTableName:childTableNames){		
+				String childQuery = "SELECT child.*,MATCH(model) AGAINST (?) FROM "+ childTableName+" child where brand = ? order by MATCH(model) AGAINST (?) desc LIMIT 1";
+
 			
 			params.add(rs.getString("model"));
-			//params.add(rs.getString("brand")); 
+			params.add(rs.getString("brand")); 
 			params.add(rs.getString("model"));
 			
 			
@@ -104,8 +108,9 @@ public class CustomMatcherImpl implements CustomMatcher {
 				
 				
 				pstmt.addBatch();count++;
-			
-				if(count == 1000)
+				
+				
+				if(count == 10)
 				{
 					
 					 //System.out.println(new Timestamp(date.getTime()));
@@ -117,6 +122,7 @@ public class CustomMatcherImpl implements CustomMatcher {
 					count=1;
 					// System.out.println(new Timestamp(date.getTime()));
 				System.out.println(new  java.sql.Timestamp(new java.util.Date().getTime()));
+				System.gc();
 				}
 				//System.out.println(new  java.sql.Timestamp(new java.util.Date().getTime()));
 			}
@@ -129,9 +135,15 @@ public class CustomMatcherImpl implements CustomMatcher {
 			
 			params.clear();
 		}
+
+		// update FK flag
+		String updateQuery = "Update "+this.mainTable+" set mapped_flag = 'T' where product_id = '"+rs.getString("product_id")+"'";
+		conn.executeUpdate(updateQuery);
+		
+	
+		}
 		pstmt.executeBatch();
 		conn.commit();
-
 	}
 
 	@Override
