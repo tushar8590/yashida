@@ -59,7 +59,7 @@ public class CustomMatcherImpl implements CustomMatcher {
 		//tableName = varname1.toString();
 		
 		
-		String fkShoeQuery = "Select model,product_id,brand from "+this.mainTable+" where mapped_flag IS NULL and section like '%SHIRTS%'";
+		String fkShoeQuery = "Select model,product_id,brand from "+this.mainTable+" where mapped_flag IS NULL'";
 		//System.out.println(fkShoeQuery);
 		ResultSet rs = conn.executeQuery(fkShoeQuery, null);
 
