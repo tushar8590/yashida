@@ -59,7 +59,7 @@ public class CustomMatcherImpl implements CustomMatcher {
 		//tableName = varname1.toString();
 		
 		
-		String fkShoeQuery = "Select model,product_id,brand from "+this.mainTable+" where mapped_flag IS NULL'";
+		String fkShoeQuery = "Select distinct model,product_id,brand from "+this.mainTable+" where mapped_flag IS NULL";
 		//System.out.println(fkShoeQuery);
 		ResultSet rs = conn.executeQuery(fkShoeQuery, null);
 
@@ -74,10 +74,10 @@ public class CustomMatcherImpl implements CustomMatcher {
 		//	System.out.println("Searching fro "+rs.getString("model"));
 			//System.out.println(new  java.sql.Timestamp(new java.util.Date().getTime()));
 			for(String childTableName:childTableNames){		
-				String childQuery = "SELECT child.*,MATCH(model) AGAINST (?) FROM "+ childTableName+" child where brand = ? order by MATCH(model) AGAINST (?) desc LIMIT 1";
+				String childQuery = "SELECT child.* FROM "+ childTableName+" child where brand = ? order by MATCH(model) AGAINST (?) desc LIMIT 1";
 
 			
-			params.add(rs.getString("model"));
+			//params.add(rs.getString("model"));
 			params.add(rs.getString("brand")); 
 			params.add(rs.getString("model"));
 			
@@ -122,7 +122,7 @@ public class CustomMatcherImpl implements CustomMatcher {
 					count=1;
 					// System.out.println(new Timestamp(date.getTime()));
 				System.out.println(new  java.sql.Timestamp(new java.util.Date().getTime()));
-				System.gc();
+				//System.gc();
 				}
 				//System.out.println(new  java.sql.Timestamp(new java.util.Date().getTime()));
 			}
