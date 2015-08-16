@@ -59,7 +59,7 @@ public class CustomMatcherImpl implements CustomMatcher {
 		//tableName = varname1.toString();
 		
 		
-		String fkShoeQuery = "Select distinct model,product_id,brand from "+this.mainTable+" where mapped_flag IS NULL";
+		String fkShoeQuery = "Select distinct model,product_id,brand from "+this.mainTable+" where processed_flag IS NULL";
 		//System.out.println(fkShoeQuery);
 		ResultSet rs = conn.executeQuery(fkShoeQuery, null);
 
@@ -68,7 +68,9 @@ public class CustomMatcherImpl implements CustomMatcher {
 		int fkCount = 1;
 		List<String> params = new ArrayList<String>();
 		PreparedStatement pstmt = null;
+		
 		String insertQuery = "insert into "+this.targetTable+" values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		boolean isMappped = false;
 		pstmt = conn.prepareStatement(insertQuery);
 		while(rs.next()){
 		//	System.out.println("Searching fro "+rs.getString("model"));
@@ -108,7 +110,7 @@ public class CustomMatcherImpl implements CustomMatcher {
 				
 				
 				pstmt.addBatch();count++;
-				
+				isMappped = true;
 				
 				if(count == 10)
 				{
@@ -136,8 +138,11 @@ public class CustomMatcherImpl implements CustomMatcher {
 			params.clear();
 		}
 
+			
 		// update FK flag
-		String updateQuery = "Update "+this.mainTable+" set mapped_flag = 'T' where product_id = '"+rs.getString("product_id")+"'";
+			String val = isMappped==true?"T":"F";
+			isMappped = false;
+		String updateQuery = "Update "+this.mainTable+" set processed_flag = 'T', mapped_flag = '"+val+"'  where product_id = '"+rs.getString("product_id")+"'";
 		conn.executeUpdate(updateQuery);
 		
 	
