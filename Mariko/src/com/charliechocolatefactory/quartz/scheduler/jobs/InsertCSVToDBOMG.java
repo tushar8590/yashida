@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.quartz.Job;
@@ -80,7 +82,7 @@ public class InsertCSVToDBOMG implements Job {
 				try {    
 					logger.info("Processing Starting for "+file.getName().substring(0, file.getName().indexOf(".")));
 					String table = "omg_"+file.getName().substring(0, file.getName().indexOf("."));
-					// drop the existing table
+					// drop the existing table  (it should be OMG_sth)
 
 					String dropTable = SQLQueries.dropGenericTable;
 					dropTable = dropTable.replace("tableName",table );
@@ -117,18 +119,27 @@ public class InsertCSVToDBOMG implements Job {
 						String vendor=table;
 						
 
-						Splitter splitter = Splitter.on(',');
+					//	Splitter splitter = Splitter.on(',');
 
 						//System.out.println(new Date());
-						List<String> lst = splitter.splitToList(line);
+					//	List<String> lst = splitter.splitToList(line);
 					//	System.out.println(lst.toArray());
 						
 						
 						
 						
-						Object arr[] = lst.toArray();
-						
+					
 						List<String> params = new ArrayList<String>();
+					//	if(table.equalsIgnoreCase("omg_yepme")){
+							Object arr[] = new Object[26];
+							Pattern p = Pattern.compile("\"([^\"]*)\"");
+							Matcher m = p.matcher(line);
+							int i = 0;
+							while (m.find()) {
+							  arr[i++] =  m.group(1);
+							}
+							
+						
 						productBean.setProductID(arr[0].toString().replace('"', ' ').trim());
 						productBean.setProductSKU(arr[1].toString().replace('"', ' ').trim());
 						productBean.setProductName(arr[2].toString().replace('"', ' ').trim());
@@ -158,7 +169,41 @@ public class InsertCSVToDBOMG implements Job {
 						productBean.setCustom5(arr[23].toString().replace('"', ' ').trim());
 						productBean.setCategoryName(arr[24].toString().replace('"', ' ').trim());
 						productBean.setCategoryPathAsString(arr[25].toString().replace('"', ' ').trim());
-
+					//	System.out.println(productBean.toString());
+						/*}else{
+							Object arr[] = lst.toArray();
+							productBean.setProductID(arr[0].toString().replace('"', ' ').trim());
+							productBean.setProductSKU(arr[1].toString().replace('"', ' ').trim());
+							productBean.setProductName(arr[2].toString().replace('"', ' ').trim());
+							productBean.setProductDescription(arr[3].toString().replace('"', ' ').trim());
+							productBean.setProductPrice(arr[4].toString().replace('"', ' ').trim());
+							productBean.setProductPriceCurrency(arr[5].toString().replace('"', ' ').trim());
+							productBean.setWasPrice(arr[6].toString().replace('"', ' ').trim());
+							productBean.setDiscountedPrice(arr[7].toString().replace('"', ' ').trim());
+							if(productBean.getDiscountedPrice().equalsIgnoreCase("0.00") || productBean.getDiscountedPrice().equalsIgnoreCase("0")){
+								productBean.setDiscountedPrice(productBean.getProductPrice());
+							}
+							productBean.setProductURL(arr[8].toString().replace('"', ' ').trim());
+							productBean.setPID(arr[9].toString().replace('"', ' ').trim());
+							productBean.setMID(arr[10].toString().replace('"', ' ').trim());
+							productBean.setProductImageSmallURL(arr[11].toString().replace('"', ' ').trim());
+							productBean.setProductImageMediumURL(arr[12].toString().replace('"', ' ').trim());
+							productBean.setProductImageLargeURL(arr[13].toString().replace('"', ' ').trim());
+							productBean.setMPN(arr[14].toString().replace('"', ' ').trim());
+							productBean.setStockAvailability(arr[15].toString().replace('"', ' ').trim());
+							productBean.setBrand(arr[16].toString().replace('"', ' ').trim());
+							productBean.setLocation(arr[17].toString().replace('"', ' ').trim());
+							productBean.setColour(arr[18].toString().replace('"', ' ').trim());
+							productBean.setCustom1(arr[19].toString().replace('"', ' ').trim());
+							productBean.setCustom2(arr[20].toString().replace('"', ' ').trim());
+							productBean.setCustom3(arr[21].toString().replace('"', ' ').trim());
+							productBean.setCustom4(arr[22].toString().replace('"', ' ').trim());
+							productBean.setCustom5(arr[23].toString().replace('"', ' ').trim());
+							productBean.setCategoryName(arr[24].toString().replace('"', ' ').trim());
+							productBean.setCategoryPathAsString(arr[25].toString().replace('"', ' ').trim());
+						}*/
+						
+					//	System.out.println(productBean.toString());
 						params.add(productBean.getProductID());
 						params.add(productBean.getCategoryName());
 						params.add(productBean.getBrand());
@@ -186,10 +231,10 @@ public class InsertCSVToDBOMG implements Job {
 
 
 						if(params!=null){
-							int i = 1;
+							int j = 1;
 							for(String str: params){
 
-								pstmt.setString(i++, str);
+								pstmt.setString(j++, str);
 
 							}
 							pstmt.addBatch();
@@ -207,7 +252,7 @@ public class InsertCSVToDBOMG implements Job {
 							//conn.commit();
 							pstmt.clearBatch();
 							//pstmt.close();
-							System.out.println("Inserted OMG");  
+							//System.out.println("Inserted OMG");  
 							count=1;
 							// System.out.println(new Timestamp(date.getTime()));
 						}

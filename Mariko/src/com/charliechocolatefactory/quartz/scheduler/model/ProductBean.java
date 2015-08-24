@@ -224,5 +224,27 @@ public class ProductBean {
 	public void setCategoryPathAsString(String categoryPathAsString) {
 		CategoryPathAsString = categoryPathAsString;
 	}
+	@Override
+	public String toString() {
+		return "ProductBean [ProductID=" + ProductID + ", ProductSKU="
+				+ ProductSKU + ", ProductName=" + ProductName
+				+ ", ProductDescription=" + ProductDescription
+				+ ", ProductPrice=" + ProductPrice + ", ProductPriceCurrency="
+				+ ProductPriceCurrency + ", WasPrice=" + WasPrice
+				+ ", DiscountedPrice=" + DiscountedPrice + ", ProductURL="
+				+ ProductURL + ", PID=" + PID + ", MID=" + MID
+				+ ", ProductImageSmallURL=" + ProductImageSmallURL
+				+ ", ProductImageMediumURL=" + ProductImageMediumURL
+				+ ", ProductImageLargeURL=" + ProductImageLargeURL + ", MPN="
+				+ MPN + ", StockAvailability=" + StockAvailability + ", Brand="
+				+ Brand + ", Location=" + Location + ", Colour=" + Colour
+				+ ", custom1=" + custom1 + ", custom2=" + custom2
+				+ ", custom3=" + custom3 + ", custom4=" + custom4
+				+ ", custom5=" + custom5 + ", CategoryName=" + CategoryName
+				+ ", CategoryPathAsString=" + CategoryPathAsString + ", size="
+				+ size + ", colorVaraiants=" + colorVaraiants
+				+ ", sizeVariants=" + sizeVariants + ", offers=" + offers
+				+ ", styleCode=" + styleCode + "]";
+	}
 	
 }
