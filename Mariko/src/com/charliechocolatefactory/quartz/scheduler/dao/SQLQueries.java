@@ -73,6 +73,7 @@ public class SQLQueries {
 	 // for New Aparel Feed Loader 201506
 	 // drop table
 	 public static String dropGenericTable = "drop table IF EXISTS tableName";
+	 public static String truncateGenericTable = "truncate table  tableName";
 	 public static String createGenericTable = "CREATE TABLE tableName (    product_id TINYTEXT CHARACTER SET latin1,    section TEXT CHARACTER SET latin1,    brand TEXT CHARACTER SET latin1,    model TEXT CHARACTER SET latin1,    website TEXT CHARACTER SET latin1,    price TEXT CHARACTER SET latin1,    image TEXT CHARACTER SET latin1,    image_medium TEXT,    image_zoom TEXT,    url TEXT CHARACTER SET latin1,    color TEXT CHARACTER SET latin1,    offers TEXT CHARACTER SET latin1,    stock TEXT CHARACTER SET latin1,    CategoryPath TEXT CHARACTER SET latin1,    custom1 TEXT CHARACTER SET latin1,    custom2 TEXT CHARACTER SET latin1,    custom3 TEXT CHARACTER SET latin1,    custom4 TEXT CHARACTER SET latin1,    custom5 TEXT CHARACTER SET latin1,    description TEXT CHARACTER SET latin1,    size TEXT,    size_variants TEXT,    color_variants TEXT,    menu_link TEXT,    style_code TEXT,FULLTEXT KEY `searchIndex` (`brand`,`model`,`website`)  ) ENGINE=MYISAM DEFAULT CHARSET=utf8";
 	 
 	 public static String insertGenericOMG  = "INSERT INTO tableName(product_id, section, brand, model, website, price, image, image_medium, image_zoom, url, color, stock,CategoryPath,custom1,custom2,custom3, custom4, custom5,description ) "
@@ -83,6 +84,7 @@ public class SQLQueries {
 	 public static String insertGenericSD = "INSERT INTO tableName(product_id, section, brand, model, website, price, image_zoom, url, stock,CategoryPath,description ) "
 					+ "VALUES(?,?,?,?,?,?,?,?,?,?,? )";
 	 
+	 public static String insertShop = "insert into tableName values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" ;
 	 
 	 
 }

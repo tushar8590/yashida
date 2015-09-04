@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.quartz.Job;
@@ -113,7 +115,14 @@ public class InsertFKcsvtoDB implements Job {
 									 
 									 
 									String []arr = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
-
+									/*String []arr = new String[25];
+									Pattern p = Pattern.compile("\"([^\"]*)\"");
+									Matcher m = p.matcher(line);
+									int j = 0;
+									while (m.find()) {
+									  arr[j++] =  m.group(1);
+									}*/
+									System.out.println(arr.length);
 									List<String> params = new ArrayList<String>();
 									try{
 
@@ -131,8 +140,8 @@ public class InsertFKcsvtoDB implements Job {
 										productBean.setSize(arr[16]+ " "+arr[18].replace('"', ' '));
 										productBean.setColour(arr[17].replace('"', ' ') );
 										productBean.setSizeVariants(arr[19].replace('"', ' '));
-										productBean.setColorVaraiants(arr[20].replace('"', ' '));
-										productBean.setStyleCode(arr[21].replace('"', ' '));
+										//productBean.setColorVaraiants(arr[20].replace('"', ' '));
+									//	productBean.setStyleCode(arr[21].replace('"', ' '));
 
 										String []images =  productBean.getProductImageLargeURL().split(",");
 										String imageFinal ="";
