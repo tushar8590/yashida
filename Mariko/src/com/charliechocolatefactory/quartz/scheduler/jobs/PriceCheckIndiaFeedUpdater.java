@@ -59,9 +59,10 @@ static int Mycount = 1;
 	}
 
 
-/*	public static void main(String[] args) throws JsonProcessingException, IOException {
-		
-	}*/
+	public static void main(String[] args) throws JsonProcessingException, IOException,Exception {
+		PriceCheckIndiaFeedUpdater feedUpdater = new PriceCheckIndiaFeedUpdater();
+		feedUpdater.execute(null);
+	}
 	
 	 static boolean saveResults(List<Product> list ){
 		 int i = 0;
@@ -129,9 +130,9 @@ static int Mycount = 1;
 	                	
 	                	
 	                }
-	                if(i % 100 == 0)
+	                if(i % 10 == 0)
 	                {
-	                	System.out.println("Executed for 100 rows");
+	                	System.out.println("Executed for 10 rows");
 	                }
 	                System.gc();
 	            }
@@ -178,7 +179,7 @@ static int Mycount = 1;
 		driver.findElement(By.cssSelector("body > div.container > div.row > div:nth-child(2) > form > fieldset > button")).click(); 
 		driver.findElement(By.cssSelector("#catalogs-link > a")).click();   
 		 List<Product> list = null;
-		    for(int x =7;x<=64;x++){
+		    for(int x =2;x<=2;x++){
 		    String path = "#stores > form > fieldset > table > tbody > tr:nth-child("+x+") > td:nth-child(4) > a";
 		    	WebElement urlElem = driver.findElement(By.cssSelector(path));
 		    //	System.out.println(url.getAttribute("href").toString());

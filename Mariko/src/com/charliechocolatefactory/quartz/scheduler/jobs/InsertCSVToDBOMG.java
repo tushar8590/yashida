@@ -245,7 +245,7 @@ public class InsertCSVToDBOMG implements Job {
 						//pstmt.close();
 						//System.out.println("I");
 						//System.out.println(params);
-						if(count == 1000)
+						if(count == 10)
 						{
 							 //System.out.println(new Timestamp(date.getTime()));
 							pstmt.executeBatch();

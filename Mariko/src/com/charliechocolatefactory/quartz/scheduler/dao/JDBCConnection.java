@@ -76,7 +76,7 @@ public class JDBCConnection {
 			e.printStackTrace();
 		}
 		return conn;*/
-		System.out.println("JDBC Count for "+counter++);
+		//System.out.println("JDBC Count for "+counter++);
 		return new JDBCConnection();
 	}
 	

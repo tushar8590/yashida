@@ -33,7 +33,7 @@ public class SQLQueries {
 	public static String naaptolRawProductMaseter = "SELECT product_id,product_title FROM product_master WHERE product_sub_category = ? and mapped_naaptol = 'F'";
 	public static String insertPCIFeed = "insert into pci_product_feed_temp values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	public static String getURLsPCIFeed = "select id,url,website from pci_product_feed where url_mapped = 'F' LIMIT 3000";
-	public static String insertproduct_pci_url_temp = "INSERT INTO product_pci_url_temp VALUES(?,?,?)";
+	public static String insertproduct_pci_url_temp = "INSERT INTO product_pci_url_temp(id,vendor,url) VALUES(?,?,?)";
 	public static String updatePCIFeedForUrlMapping = "update pci_product_feed_temp set url_mapped = 'T' where id = ? and website = ?";
 	
 	// PCIfeed updater queries
@@ -86,5 +86,6 @@ public class SQLQueries {
 	 
 	 public static String insertShop = "insert into tableName values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" ;
 	 
-	 
+	 // get the fk Images for Verification
+	 public static String fkImgages = "select CASE WHEN image IS NOT NULL AND TRIM(image) <> '' THEN TRIM(image)  WHEN image_medium IS NOT NULL AND TRIM(image_medium) <> '' THEN TRIM(image_medium)  ELSE TRIM(image_zoom) END AS image FROM flipkart_men_apparel f WHERE section = 'Shirts' LIMIT 5 ";
 }

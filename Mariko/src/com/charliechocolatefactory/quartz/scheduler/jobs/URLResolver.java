@@ -44,7 +44,13 @@ public class URLResolver implements Job {
 	JDBCConnection conn;
 
 	public static void main(String[] args) throws Exception {
-		
+		URLResolver ur = new URLResolver();
+		try {
+			ur.resolveURLs();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	static String website;
@@ -117,8 +123,8 @@ public class URLResolver implements Job {
 					params.add(URLResolver.website);
 					params.add(url);
 					if(conn.upsertData(sql, params)){
-						System.out.println(id);
-						System.out.println("Inserted " +url);
+						//System.out.println(id);
+						//System.out.println("Inserted " +url);
 						counter ++;
 					}
 					
@@ -132,7 +138,9 @@ public class URLResolver implements Job {
 					
 					
 				} catch (SQLException e) {
+					System.out.println("at "+new Timestamp(new Date().getTime()));
 					e.printStackTrace();
+					continue;
 				}finally{
 					//conn.closeConnection();
 				}
@@ -146,13 +154,7 @@ public class URLResolver implements Job {
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		
 		System.out.println("Resolving URLS");
-		/*URLResolver ur = new URLResolver();
-		try {
-			ur.resolveURLs();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+		
 		
 	}
 
