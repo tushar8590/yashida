@@ -64,7 +64,7 @@ public class JDBCConnection {
 	}
 	public static JDBCConnection getInstance(){
 		 
-/*		try {
+		try {
 			if(conn == null || con.isClosed()){
 				synchronized(JDBCConnection.class){
 					if(conn == null || con.isClosed()){
@@ -75,9 +75,9 @@ public class JDBCConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return conn;*/
+		return conn;
 		//System.out.println("JDBC Count for "+counter++);
-		return new JDBCConnection();
+		// new JDBCConnection();
 	}
 	
 	public ResultSet executeQuery(String query,List<String> params){

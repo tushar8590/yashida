@@ -65,7 +65,7 @@ public class URLResolver implements Job {
 		conn = JDBCConnection.getInstance();
 		//ResultSet rs = conn.executeQuery(SQLQueries.getURLsPCIFeed, null);
 		ResultSet rs = conn.executeQuery(SQLQueries.getPartiallyResolvedURLS, null);
-		
+		List<String> params = new ArrayList<String>();
 		System.out.println("Starting at "+new Timestamp(new Date().getTime()));
 			while(rs.next()){
 				try {
@@ -76,10 +76,24 @@ public class URLResolver implements Job {
 					//WebDriver driver = new FirefoxDriver();
 					
 						driver.get(urlOld);
-						WebElement elm = driver.findElement(By.xpath("//*[@id='redirect-div']/p[4]/a"));
+						WebElement elm = null;
+						try{
+					
+						 elm = driver.findElement(By.xpath("//*[@id='redirect-div']/p[4]/a"));
 						//System.out.println(elm.getAttribute("href"));
-						
-						
+						 
+						}catch(Exception e){
+						    
+						    System.out.println(urlOld);
+				              
+		                    params.add(urlOld);
+		                    params.add(id);
+		                    params.add(URLResolver.website);
+		                    
+						    conn.upsertData(SQLQueries.updatePCIFeedForUrlMappingForInvalidUrls, params);
+						    params.clear();
+						    continue;
+						}
 						
 					/*synchronized(driver){
 						driver.wait(15000);
@@ -115,8 +129,8 @@ public class URLResolver implements Job {
 					
 					
 					// save it
-					
-					String sql = SQLQueries.insertproduct_pci_url_temp;
+				// we could cokmment this and update 	
+					/*String sql = SQLQueries.insertproduct_pci_url_temp;
 					
 					List<String> params = new ArrayList<String>();
 					params.add(id);
@@ -127,19 +141,28 @@ public class URLResolver implements Job {
 						//System.out.println("Inserted " +url);
 						counter ++;
 					}
+
+					params.remove(2);*/
+					//
 					
-					params.remove(2);
+					// and update the url here only  
+					
+					params.add(url);
+					params.add(id);
+                    params.add(URLResolver.website);
+                    
 					
 					if(conn.upsertData(SQLQueries.updatePCIFeedForUrlMapping, params)){
 						//counter++;
 					}
-					
+					params.clear();
 					//conn.closeConnection();
 					
 					
 				} catch (SQLException e) {
 					System.out.println("at "+new Timestamp(new Date().getTime()));
 					e.printStackTrace();
+					System.out.println("Exception  at "+new Timestamp(new Date().getTime()));
 					continue;
 				}finally{
 					//conn.closeConnection();

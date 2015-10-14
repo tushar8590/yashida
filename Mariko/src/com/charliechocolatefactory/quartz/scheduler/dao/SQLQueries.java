@@ -34,8 +34,9 @@ public class SQLQueries {
 	public static String insertPCIFeed = "insert into pci_product_feed_temp values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	public static String getURLsPCIFeed = "select id,url,website from pci_product_feed where url_mapped = 'F' LIMIT 3000";
 	public static String insertproduct_pci_url_temp = "INSERT INTO product_pci_url_temp(id,vendor,url) VALUES(?,?,?)";
-	public static String updatePCIFeedForUrlMapping = "update pci_product_feed_temp set url_mapped = 'T' where id = ? and website = ?";
-	
+	public static String updatePCIFeedForUrlMapping = "update pci_product_feed_temp set url_mapped = 'T',url = ? where id = ? and website = ?";
+	public static String updatePCIFeedForUrlMappingForInvalidUrls = "update pci_product_feed_temp set url_mapped = 'X',url = ? where id = ? and website = ?";
+
 	// PCIfeed updater queries
 	public static String findProductExist = "select * from pci_product_feed_temp where id = ? and website = ?";
 	public static String updatePCIFeed = "update pci_product_feed_temp set price = ? ,offer = ? , stock = ?,url_mapped = 'U' where id = ? and website = ?";
